@@ -1,31 +1,28 @@
 import praw,requests,re
 
 class Reddit(praw.Reddit):
-    def determine_format(id):
-        pass
+    def determine_filename(self, post, url):
+        if self.submission(id=post).is_self:
+            return None
+        else:
+            filename = url.split("/")
+            filename = filename[-1].replace('?', '')
+            return filename
 
     def extract_url(self):
-        for post in self.subreddit('earthporn').hot(limit=15):
+        for post in self.subreddit('earthporn').hot(limit=5):
             url = post.url
-            if re.search('comments', url):
+            content = requests.get(url).content
+            filename = self.determine_filename(post, url, content)
+            if filename is None:
                 continue
-
-            # split url and only keep the last item
-            file_name = url.split("/")
-            file_name = file_name[-1]
-
-            if "." not in file_name:
-                file_name += ".jpg"
-
-            file_name = file_name.replace('?', '')  # character not allowed
-            yield url, file_name
+            yield url, filename, content
 
 r = Reddit()
-for url, file_name in r.extract_url():
-    r = requests.get(url)
+for url, filename, content in r.extract_url():
     try:
-        with open(file_name, "xb") as f:
-            f.write(r.content)
+        with open(filename, "xb") as f:
+            f.write(content)
     except FileExistsError:
         print("file exists")
         continue
