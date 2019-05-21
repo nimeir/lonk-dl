@@ -11,8 +11,8 @@ class Reddit(praw.Reddit):
             filename = filename[-1].replace('?', '')
             return filename
 
-    def extract_info(self):
-        for post in self.subreddit('linkiscute').hot(limit=5):
+    def extract_info(self, subreddit, post_limit=10):
+        for post in self.subreddit(subreddit).hot(limit=post_limit):
             url = post.url
             request = requests.get(url)
             filename = self.determine_filename(post, url, request)
@@ -22,10 +22,10 @@ class Reddit(praw.Reddit):
             yield url, filename, content
 
 r = Reddit()
-for url, filename, content in r.extract_info():
+for url, filename, content in r.extract_info('linkiscute'):
     try:
         with open(filename, "xb") as f:
             f.write(content)
     except FileExistsError:
-        print("file exists")
+        print("[%s] File already exists" % filename)
         continue
