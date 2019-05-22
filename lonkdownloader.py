@@ -1,5 +1,5 @@
-import praw,requests,re
-import sys
+import praw,requests
+import argparse
 
 class Reddit(praw.Reddit):
     def determine_filename(self, post, url, request):
@@ -12,7 +12,7 @@ class Reddit(praw.Reddit):
             filename = filename[-1].replace('?', '')
             return filename
 
-    def extract_info(self, subreddit, sort, post_limit=10):
+    def extract_info(self, subreddit, post_limit, sort):
         for post in getattr(self.subreddit(subreddit), sort)(limit=post_limit):
             url = post.url
             request = requests.get(url)
@@ -23,11 +23,17 @@ class Reddit(praw.Reddit):
             yield url, filename, content
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('subreddit')
+    parser.add_argument('--limit', '-l', type=int)
+    parser.add_argument('--type', '-t', type=str, default='new')
+    args = parser.parse_args()
     r = Reddit()
-    for url, filename, content in r.extract_info(sys.argv[1], sys.argv[2]):
+    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.type):
         try:
             with open(filename, "xb") as f:
+                print('[%s] Writing file.')
                 f.write(content)
         except FileExistsError:
-            print("[%s] File already exists" % filename)
-            continue
+            print("[%s] File already exists. Terminating script." % filename)
+            break
