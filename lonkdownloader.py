@@ -12,8 +12,10 @@ class Reddit(praw.Reddit):
             filename = filename[-1].replace('?', '')
             return filename
 
-    def extract_info(self, subreddit, post_limit, sort):
+    def extract_info(self, subreddit, post_limit, sort, no_nsfw):
         for post in getattr(self.subreddit(subreddit), sort)(limit=post_limit):
+            if self.submission(id=post).over_18:
+                continue
             url = post.url
             request = requests.get(url)
             filename = self.determine_filename(post, url, request)
@@ -27,13 +29,14 @@ if __name__ == '__main__':
     parser.add_argument('subreddit')
     parser.add_argument('--limit', '-l', type=int)
     parser.add_argument('--type', '-t', type=str, default='new')
+    parser.add_argument('--no-nsfw', action='store_true')
     args = parser.parse_args()
     r = Reddit()
-    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.type):
+    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.type, args.no_nsfw):
         try:
             with open(filename, "xb") as f:
-                print('[%s] Writing file.')
+                print('[%s] Writing file.' % filename)
                 f.write(content)
         except FileExistsError:
-            print("[%s] File already exists. Terminating script." % filename)
+            print("[%s] File already exists.\nTerminating script." % filename)
             break
