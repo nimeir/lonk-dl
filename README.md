@@ -33,6 +33,7 @@ Python lonkdownloader.py twice --limit 100
                         1000)
   --sort SORT, -t SORT  Set frontpage sort type. For example: 'hot',
                         'controversial' (default: new)
+  --path PATH, -p PATH  Specify the download directory path (default: None)
   --no-nsfw             Set the limit for maximum number of posts that will be
                         requested (default: False)
 ```
