@@ -2,6 +2,7 @@ import praw, requests
 import argparse
 
 
+# Extend the praw.Reddit class
 class Reddit(praw.Reddit):
     def determine_filename(self, post, url, request):
         if self.submission(id=post).is_self:
