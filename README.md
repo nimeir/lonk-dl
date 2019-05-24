@@ -1,6 +1,6 @@
-# LonkDownloader
+# lonk-dl
 
-LonkDownloader - Python automation script for downloading images from a subreddit using Python and PRAW.
+Python automation script for downloading images from a subreddit using Python and PRAW.
 
 ### Prerequisites
 
@@ -17,12 +17,12 @@ This script is designed to be run daily as it terminates when a duplicate filena
 For first time users it is recommended to run the script without any options as the maximum request allowed by the API is 1000 (which is the default value when no limit argument is supplied to lonkdownloader).
 
 ```
-Python lonkdownloader.py [OPTIONS] subreddit
+Python lonk_dl.py [OPTIONS] subreddit
 ```
 
 Example usage:
 ```
-Python lonkdownloader.py twice --limit 100
+Python lonk_dl.py twice --limit 100
 ```
 
 ## Options
