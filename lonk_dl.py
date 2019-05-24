@@ -1,5 +1,4 @@
-import praw, requests
-import argparse
+import praw, requests, argparse, os
 
 
 # Extend the praw.Reddit class
@@ -33,17 +32,23 @@ def parse_arguments():
     parser.add_argument('--limit', '-l', type=int, default=1000, help="Do not download images that are marked nsfw")
     parser.add_argument('--sort', '-t', type=str, default='new',
                         help="Set frontpage sort type. For example: 'hot', 'controversial'")
+    parser.add_argument('--path', '-p', type=str, help="Specify the download directory path")
     parser.add_argument('--no-nsfw', action='store_true',
                         help="Set the limit for maximum number of posts that will be requested")
     return parser.parse_args()
 
+def determine_path_or_file(path, filename):
+    if path and os.path.isdir(path):
+        return os.path.join(path, filename)
+    else:
+        return filename
 
 def main():
     args = parse_arguments()
     r = Reddit()
     for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
-            with open(filename, "xb") as f:
+            with open(determine_path_or_file(args.path, filename), "xb") as f:
                 print('[%s] Writing file.' % filename)
                 f.write(content)
         except FileExistsError:
