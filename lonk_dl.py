@@ -29,12 +29,13 @@ class Reddit(praw.Reddit):
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('subreddit')
-    parser.add_argument('--limit', '-l', type=int, default=1000, help="Do not download images that are marked nsfw")
+    parser.add_argument('--limit', '-l', type=int, default=1000,
+                        help="Set the limit for maximum number of posts that will be requested")
     parser.add_argument('--sort', '-t', type=str, default='new',
                         help="Set frontpage sort type. For example: 'hot', 'controversial'")
     parser.add_argument('--path', '-p', type=str, help="Specify the download directory path")
     parser.add_argument('--no-nsfw', action='store_true',
-                        help="Set the limit for maximum number of posts that will be requested")
+                        help="Do not download images that are marked nsfw")
     return parser.parse_args()
 
 def determine_path_or_file(path, filename):
