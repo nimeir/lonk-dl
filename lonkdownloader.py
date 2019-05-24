@@ -25,14 +25,16 @@ class Reddit(praw.Reddit):
             yield url, filename, content
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('subreddit')
-    parser.add_argument('--limit', '-l', type=int)
-    parser.add_argument('--type', '-t', type=str, default='new')
-    parser.add_argument('--no-nsfw', action='store_true')
+    parser.add_argument('--limit', '-l', type=int, default=1000, help="Do not download images that are marked nsfw")
+    parser.add_argument('--sort', '-t', type=str, default='new',
+                        help="Set frontpage sort type. For example: 'hot', 'controversial'")
+    parser.add_argument('--no-nsfw', action='store_true',
+                        help="Set the limit for maximum number of posts that will be requested")
     args = parser.parse_args()
     r = Reddit()
-    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.type, args.no_nsfw):
+    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
             with open(filename, "xb") as f:
                 print('[%s] Writing file.' % filename)
