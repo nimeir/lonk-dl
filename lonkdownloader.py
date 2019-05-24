@@ -14,7 +14,7 @@ class Reddit(praw.Reddit):
 
     def extract_info(self, subreddit, post_limit, sort, no_nsfw):
         for post in getattr(self.subreddit(subreddit), sort)(limit=post_limit):
-            if self.submission(id=post).over_18:
+            if no_nsfw and self.submission(id=post).over_18:
                 continue
             url = post.url
             request = requests.get(url)
