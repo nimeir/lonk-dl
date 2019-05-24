@@ -34,11 +34,11 @@ def parse_arguments():
                         help="Set frontpage sort type. For example: 'hot', 'controversial'")
     parser.add_argument('--no-nsfw', action='store_true',
                         help="Set the limit for maximum number of posts that will be requested")
-    args = parser.parse_args()
+    return parser.parse_args()
 
 
 def main():
-    parse_arguments()
+    args = parse_arguments()
     r = Reddit()
     for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
