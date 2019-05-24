@@ -29,11 +29,12 @@ Python lonkdownloader.py twice --limit 100
 ```            
   -h, --help            show this help message and exit
   --limit LIMIT, -l LIMIT
-                        Do not download images that are marked nsfw
+                        Do not download images that are marked nsfw (default:
+                        1000)
   --sort SORT, -t SORT  Set frontpage sort type. For example: 'hot',
-                        'controversial'
+                        'controversial' (default: new)
   --no-nsfw             Set the limit for maximum number of posts that will be
-                        requested
+                        requested (default: False)
 ```
 
 ## Acknowledgements
