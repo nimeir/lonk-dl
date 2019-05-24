@@ -1,5 +1,6 @@
-import praw,requests
+import praw, requests
 import argparse
+
 
 class Reddit(praw.Reddit):
     def determine_filename(self, post, url, request):
@@ -24,7 +25,8 @@ class Reddit(praw.Reddit):
             content = request.content
             yield url, filename, content
 
-if __name__ == '__main__':
+
+def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('subreddit')
     parser.add_argument('--limit', '-l', type=int, default=1000, help="Do not download images that are marked nsfw")
@@ -33,6 +35,10 @@ if __name__ == '__main__':
     parser.add_argument('--no-nsfw', action='store_true',
                         help="Set the limit for maximum number of posts that will be requested")
     args = parser.parse_args()
+
+
+def main():
+    parse_arguments()
     r = Reddit()
     for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
@@ -42,3 +48,7 @@ if __name__ == '__main__':
         except FileExistsError:
             print("[%s] File already exists.\nTerminating script." % filename)
             break
+
+
+if __name__ == '__main__':
+    main()
