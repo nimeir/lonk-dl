@@ -20,6 +20,11 @@ For first time users it is recommended to run the script without any options as 
 Python lonkdownloader.py [OPTIONS] subreddit
 ```
 
+Example usage:
+```
+Python lonkdownloader.py twice --limit 100
+```
+
 ## Options
 ```            
   -h, --help            show this help message and exit
