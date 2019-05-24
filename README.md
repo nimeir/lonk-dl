@@ -1,4 +1,4 @@
-# Project Title
+# LonkDownloader
 
 LonkDownloader - Python automation script for downloading images from a subreddit using Python and PRAW.
 
