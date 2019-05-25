@@ -1,8 +1,12 @@
 import praw, requests, argparse, os
 
-
 # Extend the praw.Reddit class
-class Reddit(praw.Reddit):
+class LonkDl(praw.Reddit):
+    def __init__(self, args):
+        super().__init__()
+        for key, value in vars(args).items():
+            setattr(self, key, value)
+
     def determine_filename(self, post, url, request):
         if self.submission(id=post).is_self:
             return None
@@ -13,8 +17,8 @@ class Reddit(praw.Reddit):
             filename = filename[-1].replace('?', '')
             return filename
 
-    def extract_info(self, subreddit, post_limit, sort, no_nsfw):
-        for post in getattr(self.subreddit(subreddit), sort)(limit=post_limit):
+    def extract_info(self, subreddit_name, post_limit, sort, no_nsfw):
+        for post in getattr(self.subreddit(subreddit_name), sort)(limit=post_limit):
             if no_nsfw and self.submission(id=post).over_18:
                 continue
             url = post.url
@@ -28,7 +32,7 @@ class Reddit(praw.Reddit):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('subreddit')
+    parser.add_argument('subreddit_name')
     parser.add_argument('--limit', '-l', type=int, default=1000,
                         help="Set the limit for maximum number of posts that will be requested")
     parser.add_argument('--sort', '-t', type=str, default='new',
@@ -46,8 +50,8 @@ def determine_path_or_file(path, filename):
 
 def main():
     args = parse_arguments()
-    r = Reddit()
-    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
+    r = LonkDl(args)
+    for url, filename, content in r.extract_info(args.subreddit_name, args.limit, args.sort, args.no_nsfw):
         try:
             with open(determine_path_or_file(args.path, filename), "xb") as f:
                 print('[%s] Writing file.' % filename)
