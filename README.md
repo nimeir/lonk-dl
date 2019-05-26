@@ -5,11 +5,13 @@ Python automation script for downloading images from a subreddit using Python an
 ### Prerequisites
 
 Latest version of Python and PRAW needs to be installed.
-Requires the script to be registered on Reddit as it uses the Reddit API (https://old.reddit.com/prefs/apps/).
+Requires the script to be registered on Reddit as it uses the Reddit API ().
 
 ### Installing
 
-Download the script and it can be run using Python. Users are required to create a praw.ini file in the working directory specifying the client_id, client_secret, and user_agent.
+1. Download the script and it can be run using Python. 
+2. Register the script on '''https://old.reddit.com/prefs/apps/'''.
+3. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The user_agent can be a short description of your script. For example ```user_agent=image downloader by ...```.
 
 ## Usage guide
 This script is designed to be run daily as it terminates when a duplicate filename is found. Hence this script will slowly build a database of images from the desired subreddit.
@@ -36,6 +38,7 @@ Python lonk_dl.py twice --limit 100
   --path PATH, -p PATH  Specify the download directory path (default: None)
   --no-nsfw             Do not download images that are marked nsfw (default:
                         False)
+  -i                    Create praw.ini (default: False)
 ```
 
 ## Acknowledgements
