@@ -28,7 +28,7 @@ class Reddit(praw.Reddit):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('subreddit')
+    parser.add_argument('subreddit', nargs='?')
     parser.add_argument('--limit', '-l', type=int, default=1000,
                         help="Set the limit for maximum number of posts that will be requested")
     parser.add_argument('--sort', '-t', type=str, default='new',
@@ -36,6 +36,7 @@ def parse_arguments():
     parser.add_argument('--path', '-p', type=str, help="Specify the download directory path")
     parser.add_argument('--no-nsfw', action='store_true',
                         help="Do not download images that are marked nsfw")
+    parser.add_argument('-i', action='store_true', help='Create praw.ini')
     return parser.parse_args()
 
 def determine_path_or_file(path, filename):
@@ -44,17 +45,25 @@ def determine_path_or_file(path, filename):
     else:
         return filename
 
+
+def create_init():
+    with open('praw.ini', 'w') as f:
+        f.write('[DEFAULT]\ncllient_id=\nclient_secret=\nuser_agent=')
+
 def main():
     args = parse_arguments()
-    r = Reddit()
-    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
-        try:
-            with open(determine_path_or_file(args.path, filename), "xb") as f:
-                print('[%s] Writing file.' % filename)
-                f.write(content)
-        except FileExistsError:
-            print("[%s] File already exists.\nTerminating script." % filename)
-            break
+    if args.i:
+        create_init()
+    else:
+        r = Reddit()
+        for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
+            try:
+                with open(determine_path_or_file(args.path, filename), "xb") as f:
+                    print('[%s] Writing file.' % filename)
+                    f.write(content)
+            except FileExistsError:
+                print("[%s] File already exists.\nTerminating script." % filename)
+                break
 
 
 if __name__ == '__main__':
