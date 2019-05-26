@@ -51,20 +51,20 @@ def create_init():
         f.write('[DEFAULT]\ncllient_id=\nclient_secret=\nuser_agent=')
 
 def main():
+    r = Reddit()
+    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
+        try:
+            with open(determine_path_or_file(args.path, filename), "xb") as f:
+                print('[%s] Writing file.' % filename)
+                f.write(content)
+        except FileExistsError:
+            print("[%s] File already exists.\nTerminating script." % filename)
+            break
+
+
+if __name__ == '__main__':
     args = parse_arguments()
     if args.i:
         create_init()
     else:
-        r = Reddit()
-        for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
-            try:
-                with open(determine_path_or_file(args.path, filename), "xb") as f:
-                    print('[%s] Writing file.' % filename)
-                    f.write(content)
-            except FileExistsError:
-                print("[%s] File already exists.\nTerminating script." % filename)
-                break
-
-
-if __name__ == '__main__':
-    main()
+        main()
