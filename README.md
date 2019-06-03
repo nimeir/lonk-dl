@@ -1,6 +1,6 @@
 # lonk-dl
 
-Python automation script for downloading images from a subreddit using Python and PRAW.
+Reddit bulk image downloader script.
 
 ### Prerequisites
 
