@@ -14,7 +14,12 @@ class Reddit(praw.Reddit):
             return filename
 
     def extract_info(self, subreddit, post_limit, sort, no_nsfw):
-        for post in getattr(self.subreddit(subreddit), sort)(limit=post_limit):
+        if '/u/' or 'u/' in subreddit:
+            mobj = getattr(self.redditor(subreddit), sort)(limit=post_limit)
+        else:
+            mobj = getattr(self.subreddit(subreddit), sort)(limit=post_limit)
+
+        for post in mobj:
             if no_nsfw and self.submission(id=post).over_18:
                 continue
             url = post.url
@@ -39,6 +44,7 @@ def parse_arguments():
     parser.add_argument('-i', action='store_true', help='Create praw.ini')
     return parser.parse_args()
 
+
 def determine_path_or_file(path, filename):
     if path and os.path.isdir(path):
         return os.path.join(path, filename)
@@ -49,6 +55,7 @@ def determine_path_or_file(path, filename):
 def create_init():
     with open('praw.ini', 'w') as f:
         f.write('[DEFAULT]\ncllient_id=\nclient_secret=\nuser_agent=')
+
 
 def main():
     r = Reddit()
