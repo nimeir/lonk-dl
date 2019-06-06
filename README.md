@@ -2,21 +2,26 @@
 
 Reddit bulk image downloader script.
 
-### Prerequisites
+## Prerequisites
 
 Latest version of Python and PRAW needs to be installed.
-Requires the script to be registered on Reddit as it uses the Reddit API ().
+Requires the script to be registered on Reddit as it uses the Reddit API. See instruction below.
 
-### Installing
+## Installing
 
-1. Download the script and it can be run using Python. 
-2. Register the script on '''https://old.reddit.com/prefs/apps/'''.
-3. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The user_agent can be a short description of your script. For example ```user_agent=image downloader by ...```.
+1. Download the script.
+2. Register the script on '''https://old.reddit.com/prefs/apps/'''. Set the app type to 'script'. 'Name' and 'description' can be anything you want. About url can be blank. Redirect url should be http://localhost:8080.
+3. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The client_id is the code underneath the script name in Reddit. The user_agent can be a short description of your script. Below is an example praw.ini.
+
+```
+[DEFAULT]
+client_id=242398s1sst22
+client_secret=Sdjslj32491faklkn3test
+user_agent=image grab script by boohen
+```
 
 ## Usage guide
-This script is designed to be run daily as it terminates when a duplicate filename is found. Hence this script will slowly build a database of images from the desired subreddit.
-
-For first time users it is recommended to run the script without any options as the maximum request allowed by the API is 1000 (which is the default value when no limit argument is supplied to lonkdownloader).
+This script is designed as a daily image grab script because the script terminates when a duplicate filename is found.
 
 Minimum argument needed for the extraction to work succesfully is only the subreddit name.
 
