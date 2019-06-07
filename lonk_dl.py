@@ -2,17 +2,14 @@ import praw, requests, argparse, os
 
 
 # Extend the praw.Reddit class
+import prawcore
+
+
 class Reddit(praw.Reddit):
     def determine_filename(self, url):
         filename = url.split("/")
         filename = filename[-1].replace('?', '')
         return filename
-
-    def real_extract(self, post, request, url):
-        url = post.url
-        filename = self.determine_filename(url)
-        content = request.content
-        return url, filename, content
 
     def extract_info(self, subreddit, post_limit, sort, no_nsfw):
         #for redditors
@@ -26,17 +23,24 @@ class Reddit(praw.Reddit):
 
         #begin extraction with correct mobj and skip iteration depending on CLI args
         for post in mobj:
-            if type(post) == praw.models.reddit.comment.Comment:
+            try:
+                if type(post) == praw.models.reddit.comment.Comment:
+                    continue
+                if self.submission(id=post).is_self:
+                    continue
+                if no_nsfw and self.submission(id=post).over_18:
+                    continue
+                url = post.url
+                request = requests.get(url)
+                if 'text/html' in request.headers['content-type']:
+                    continue
+                filename = self.determine_filename(url)
+                content = request.content
+                yield filename, content
+            except FileNotFoundError:
+                print("Could not extract file. Continuing extraction from next post.")
                 continue
-            url = post.url
-            request = requests.get(url)
-            if self.submission(id=post).is_self:
-                continue
-            if no_nsfw and self.submission(id=post).over_18:
-                continue
-            if 'text/html' in request.headers['content-type']:
-                continue
-            yield self.real_extract(post, request, url)
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -68,7 +72,7 @@ def create_init():
 
 def main():
     r = Reddit()
-    for url, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
+    for filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
             with open(determine_path_or_file(args.path, filename), "xb") as f:
                 print('[%s] Writing file.' % filename)
@@ -76,6 +80,8 @@ def main():
         except FileExistsError:
             print("[%s] File already exists.\nTerminating script." % filename)
             break
+
+
 
 
 
