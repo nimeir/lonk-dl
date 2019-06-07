@@ -19,7 +19,7 @@ class Reddit(praw.Reddit):
         if args.redditor:
             if args.sort == 'saved':
                 mobj = self.redditor(subreddit).saved(limit=post_limit)
-            eelse:
+            else:
                 mobj = getattr(self.redditor(subreddit).submissions, sort)(limit=post_limit)
         else:
             mobj = getattr(self.subreddit(subreddit), sort)(limit=post_limit)
