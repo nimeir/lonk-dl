@@ -1,6 +1,6 @@
 # lonk-dl
 
-Reddit bulk image downloader script.
+Reddit bulk image downloader script. It can be used to download images from subreddits, specific redditors, your saved submissions, etc.
 
 ## Prerequisites
 
@@ -28,24 +28,26 @@ Minimum argument needed for the extraction to work succesfully is only the subre
 ```
 Python lonk_dl.py [OPTIONS] subreddit
 ```
-
+e
 Example usage:
-```
-Python lonk_dl.py twice --limit 100
-```
+* ```Python lonk_dl.py twice --limit 100```
+* To download from your saved submissions: ```Python lonk_dl.py myredditusername -redditor -sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
+
 
 ## Options
 ```            
   -h, --help            show this help message and exit
+  -i                    Create praw.ini (default: False)
   --limit LIMIT, -l LIMIT
                         Set the limit for maximum number of posts that will be
                         requested (default: 1000)
-  --sort SORT, -t SORT  Set frontpage sort type. For example: 'hot',
-                        'controversial' (default: new)
-  --path PATH, -p PATH  Specify the download directory path (default: None)
   --no-nsfw             Do not download images that are marked nsfw (default:
                         False)
-  -i                    Create praw.ini (default: False)
+  --path PATH, -p PATH  Specify the download directory path (default: None)
+  --sort SORT, -s SORT  Set frontpage sort type. For example: 'hot',
+                        'controversial' (default: new)
+  --redditor, -r        Extract from redditor instead of subreddit. (default:
+                        False)
 ```
 
 ## Acknowledgements
