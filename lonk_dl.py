@@ -19,13 +19,15 @@ class Reddit(praw.Reddit):
         if args.redditor:
             if args.sort == 'saved':
                 mobj = self.redditor(subreddit).saved(limit=post_limit)
-            mobj = getattr(self.redditor(subreddit).submissions, sort)(limit=post_limit)
+            eelse:
+                mobj = getattr(self.redditor(subreddit).submissions, sort)(limit=post_limit)
+        else:
+            mobj = getattr(self.subreddit(subreddit), sort)(limit=post_limit)
 
-        #for subreddits
-        mobj = getattr(self.subreddit(subreddit), sort)(limit=post_limit)
-
-        #begin extraction with correct mobj
+        #begin extraction with correct mobj and skip iteration depending on CLI args
         for post in mobj:
+            if type(post) == praw.models.reddit.comment.Comment:
+                continue
             url = post.url
             request = requests.get(url)
             if self.submission(id=post).is_self:
@@ -36,8 +38,6 @@ class Reddit(praw.Reddit):
                 continue
             yield self.real_extract(post, request, url)
 
-
-
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('subreddit', nargs='?')
@@ -47,7 +47,7 @@ def parse_arguments():
     parser.add_argument('--no-nsfw', action='store_true',
                         help="Do not download images that are marked nsfw")
     parser.add_argument('--path', '-p', type=str, help="Specify the download directory path")
-    parser.add_argument('--sort', '-t', type=str, default='new',
+    parser.add_argument('--sort', '-s', type=str, default='new',
                         help="Set frontpage sort type. For example: 'hot', 'controversial'")
     parser.add_argument('--redditor', '-r', action='store_true',
                         help="Extract from redditor instead of subreddit.")
