@@ -11,7 +11,7 @@ Requires the script to be registered on Reddit as it uses the Reddit API. See in
 
 1. Download the script.
 2. Register the script on '''https://old.reddit.com/prefs/apps/'''. Set the app type to 'script'. 'Name' and 'description' can be anything you want. About url can be blank. Redirect url should be http://localhost:8080.
-3. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The client_id is the code underneath the script name in Reddit. The user_agent can be a short description of your script. Below is an example praw.ini.
+3. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The client_id is the code underneath the script name in Reddit. **Make sure your client_secret is kept private**. The user_agent can be a short description of your script. Below is an example praw.ini.
 
 ```
 [DEFAULT]
