@@ -1,6 +1,6 @@
 # lonk-dl
 
-Reddit bulk image downloader script. It can be used to download images from subreddits, specific redditors, your saved submissions, etc.
+Reddit bulk image downloader script. It can be used to download images from subreddits, specific redditors submissions, your saved submissions, etc.
 
 ## Prerequisites
 
@@ -18,15 +18,19 @@ Requires the script to be registered on Reddit as it uses the Reddit API. See in
 client_id=242398s1sst22
 client_secret=Sdjslj32491faklkn3test
 user_agent=image grab script by boohen
+
+#complete below section if extraction fails due to authorization error
+username=
+password=
 ```
 
 ## Usage guide
 This script is designed as a daily image grab script because the script terminates when a duplicate filename is found.
 
-Minimum argument needed for the extraction to work succesfully is only the subreddit name.
+Minimum argument needed for the extraction to work succesfully is only the subreddit name or username.
 
 ```
-Python lonk_dl.py [OPTIONS] subreddit
+python lonk_dl.py [OPTIONS] subreddit
 ```
 
 Example usage:
