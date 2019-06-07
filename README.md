@@ -28,7 +28,7 @@ Minimum argument needed for the extraction to work succesfully is only the subre
 ```
 Python lonk_dl.py [OPTIONS] subreddit
 ```
-e
+
 Example usage:
 * ```Python lonk_dl.py twice --limit 100```
 * To download from your saved submissions: ```Python lonk_dl.py myredditusername -redditor -sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
