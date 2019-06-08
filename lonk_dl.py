@@ -1,10 +1,6 @@
 import praw, requests, argparse, os
 
-
-# Extend the praw.Reddit class
-import prawcore
-
-
+#extend the praw.Reddit class
 class Reddit(praw.Reddit):
     def determine_filename(self, url):
         filename = url.split("/")
@@ -67,7 +63,9 @@ def determine_path_or_file(path, filename):
 
 def create_init():
     with open('praw.ini', 'w') as f:
-        f.write('[DEFAULT]\ncllient_id=\nclient_secret=\nuser_agent=')
+        f.write('[DEFAULT]\ncllient_id=\nclient_secret=\nuser_agent=\n\n'
+                '#if authorization error occurs complete below section\n'
+                'username=\npassword=')
 
 
 def main():
@@ -80,9 +78,6 @@ def main():
         except FileExistsError:
             print("[%s] File already exists.\nTerminating script." % filename)
             break
-
-
-
 
 
 if __name__ == '__main__':
