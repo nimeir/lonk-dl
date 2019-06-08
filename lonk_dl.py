@@ -63,7 +63,7 @@ def determine_path_or_file(path, filename):
 
 def create_init():
     with open('praw.ini', 'w') as f:
-        f.write('[DEFAULT]\ncllient_id=\nclient_secret=\nuser_agent=\n\n'
+        f.write('[DEFAULT]\nclient_id=\nclient_secret=\nuser_agent=\n\n'
                 '#if authorization error occurs complete below section\n'
                 'username=\npassword=')
 
