@@ -1,18 +1,19 @@
 # lonk-dl
 
-Reddit bulk image downloader script. It can be used to download images from subreddits, specific redditors submissions, your saved submissions, etc.
+Reddit bulk image downloader script. It can be used to download images from subreddits, specific redditor's submissions, your saved submissions, etc.
 
 ## Prerequisites
 
-Latest version of Python and PRAW (Reddit API Wrapper for Python) needs to be installed.
-Requires the script to be registered on Reddit as it uses the Reddit API. See instruction below.
+* Latest version of Python
+* Required packages: **praw** (Reddit API Wrapper for Python) and **requests**
+* Registering the script on Reddit (see below for instruction)
 
 ## Installing
 
 1. Download the ```lonk_dl.py``` script.
-2. Install PRAW. One way to do this is ```python -m pip install praw```. This should also automatically install the ```requests``` package which is required.
-3. Register the script on '''https://old.reddit.com/prefs/apps/'''. Set the app type to 'script'. 'Name' and 'description' can be anything you want. About url can be blank. Redirect url should be http://localhost:8080.
-4. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The client_id is the code underneath the script name in Reddit. **Make sure your client_secret is kept private**. The user_agent can be a short description of your script. Below is an example praw.ini.
+2. Install PRAW. One way to do this is ```python -m pip install praw```. This should also automatically install the ```requests``` package which is required. For more details, see https://praw.readthedocs.io/en/latest/getting_started/installation.html 
+3. Register the script on https://old.reddit.com/prefs/apps/. Set the app type to 'script'. 'Name' and 'description' can be anything you want. About url can be blank. Redirect url should be http://localhost:8080
+4. Run ```Python lonk_dl.py -i``` to automatically create praw.ini file but you must fill out the values yourself (use the values generated from registering on Reddit). The client_id is the code underneath the script name in Reddit. **Make sure your client_secret is kept private**. The user_agent can be a short description of your script. Below is an example praw.ini (use your own values and not the one in the example).
 
 ```
 [DEFAULT]
