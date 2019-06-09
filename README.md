@@ -43,6 +43,8 @@ Example usage:
 ## Options
 ```            
   -h, --help            show this help message and exit
+  --force, -f           Overwrite existing files and continue extraction
+                        (default: False)
   -i                    Create praw.ini (default: False)
   --limit LIMIT, -l LIMIT
                         Set the limit for maximum number of posts that will be
