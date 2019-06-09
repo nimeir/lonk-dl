@@ -40,6 +40,8 @@ class Reddit(praw.Reddit):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--force', '-f', action='store_true',
+                        help='Overwrite existing files and continue extraction')
     parser.add_argument('subreddit', nargs='?')
     parser.add_argument('-i', action='store_true', help='Create praw.ini')
     parser.add_argument('--limit', '-l', type=int, default=1000,
@@ -67,12 +69,15 @@ def create_init():
                 '#if authorization error occurs complete below section\n'
                 'username=\npassword=')
 
-
 def main():
     r = Reddit()
     for postid, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
-            with open(determine_path_or_file(args.path, filename), "xb") as f:
+            if args.force == True:
+                permissions = 'wb'
+            else:
+                permissions = 'xb'
+            with open(determine_path_or_file(args.path, filename), permissions) as f:
                 print('[%s] %s: Writing file.' % (postid, filename))
                 f.write(content)
         except FileExistsError:
