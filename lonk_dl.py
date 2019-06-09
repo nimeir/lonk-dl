@@ -19,23 +19,23 @@ class Reddit(praw.Reddit):
 
         #begin extraction with correct mobj and skip iteration depending on CLI args
         for post in mobj:
-            try:
-                if type(post) == praw.models.reddit.comment.Comment:
-                    continue
-                if self.submission(id=post).is_self:
-                    continue
-                if no_nsfw and self.submission(id=post).over_18:
-                    continue
-                url = post.url
-                request = requests.get(url)
-                if 'text/html' in request.headers['content-type']:
-                    continue
-                filename = self.determine_filename(url)
-                content = request.content
-                yield filename, content
-            except FileNotFoundError:
-                print("Could not extract file. Continuing extraction from next post.")
+            print("[%s] Attempting to extract." % post.id)
+            if type(post) == praw.models.reddit.comment.Comment:
+                print("[%s] Skipping as it is a comment." % post.id)
                 continue
+            if self.submission(id=post).is_self:
+                print("[%s] Skipping as it is a self-submission." % post.id)
+                continue
+            if no_nsfw and self.submission(id=post).over_18:
+                print("[%s] Skipping as it is a NSFW post." % post.id)
+                continue
+            request = requests.get(post.url)
+            if 'text/html' in request.headers['content-type']:
+                print("[%s] Skipping as url type is html text." % post.id)
+                continue
+            filename = self.determine_filename(post.url)
+            content = request.content
+            yield post.id, filename, content
 
 
 def parse_arguments():
@@ -70,13 +70,13 @@ def create_init():
 
 def main():
     r = Reddit()
-    for filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
+    for postid, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
             with open(determine_path_or_file(args.path, filename), "xb") as f:
-                print('[%s] Writing file.' % filename)
+                print('[%s] %s: Writing file.' % (postid, filename))
                 f.write(content)
         except FileExistsError:
-            print("[%s] File already exists.\nTerminating script." % filename)
+            print("[%s] %s: File already exists. Terminating script." % (postid, filename))
             break
 
 
