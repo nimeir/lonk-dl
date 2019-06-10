@@ -1,7 +1,7 @@
 import praw, requests, argparse, os
 
-#extend the praw.Reddit class
-class Reddit(praw.Reddit):
+
+class LonkDL(praw.Reddit):
     def determine_filename(self, url):
         filename = url.split("/")
         filename = filename[-1].replace('?', '')
@@ -19,24 +19,27 @@ class Reddit(praw.Reddit):
 
         #begin extraction with correct mobj and skip iteration depending on CLI args
         for post in mobj:
-            print("[%s] Attempting to extract." % post.id)
-            if type(post) == praw.models.reddit.comment.Comment:
-                print("[%s] Skipping as it is a comment." % post.id)
+            try:
+                if type(post) == praw.models.reddit.comment.Comment:
+                    print("[%s] Skipping as it is a comment." % post.id)
+                    continue
+                if self.submission(id=post).is_self:
+                    print("[%s] Skipping as it is a self-submission." % post.id)
+                    continue
+                if no_nsfw and self.submission(id=post).over_18:
+                    print("[%s] Skipping as it is a NSFW post." % post.id)
+                    continue
+                request = requests.get(post.url)
+                if 'text/html' in request.headers['content-type']:
+                    print("[%s] Skipping as url type is html text." % post.id)
+                    continue
+                print("[%s] Attempting to extract from %s." % (post.id, post.url))
+                filename = self.determine_filename(post.url)
+                content = request.content
+                yield post.id, filename, content
+            except requests.ConnectionError:
+                print("[%s] Skipping as url cannot be reached.")
                 continue
-            if self.submission(id=post).is_self:
-                print("[%s] Skipping as it is a self-submission." % post.id)
-                continue
-            if no_nsfw and self.submission(id=post).over_18:
-                print("[%s] Skipping as it is a NSFW post." % post.id)
-                continue
-            request = requests.get(post.url)
-            if 'text/html' in request.headers['content-type']:
-                print("[%s] Skipping as url type is html text." % post.id)
-                continue
-            filename = self.determine_filename(post.url)
-            content = request.content
-            yield post.id, filename, content
-
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -56,6 +59,11 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def show_msg(msg_type):
+    if msg_type == 'comment':
+        return
+
+
 def determine_path_or_file(path, filename):
     if path and os.path.isdir(path):
         return os.path.join(path, filename)
@@ -69,11 +77,12 @@ def create_init():
                 '#if authorization error occurs complete below section\n'
                 'username=\npassword=')
 
+
 def main():
-    r = Reddit()
+    r = LonkDL()
     for postid, filename, content in r.extract_info(args.subreddit, args.limit, args.sort, args.no_nsfw):
         try:
-            if args.force == True:
+            if args.force:
                 permissions = 'wb'
             else:
                 permissions = 'xb'
