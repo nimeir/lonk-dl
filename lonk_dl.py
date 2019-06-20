@@ -38,8 +38,9 @@ class LonkDL(praw.Reddit):
                 content = request.content
                 yield post.id, filename, content
             except requests.ConnectionError:
-                print("[%s] Skipping as url cannot be reached.")
+                print("[%s] Skipping as url cannot be reached." % post.id)
                 continue
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
