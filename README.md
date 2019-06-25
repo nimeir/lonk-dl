@@ -29,11 +29,7 @@ password=
 ## Usage guide
 This script is designed as a daily image grab script because the script terminates when a duplicate filename is found.
 
-<<<<<<< HEAD
-Minimum argument needed for the extraction to work succesfully is only the subreddit name.
-=======
 Minimum argument needed for the extraction to work succesfully is only the subreddit name or username (```-redditor``` flag needed).
->>>>>>> 2dfef60e372598fafb1e8aa3825ae3744961c60d
 
 ```
 python lonk_dl.py [OPTIONS] subreddit
