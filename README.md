@@ -29,7 +29,7 @@ password=
 ## Usage guide
 This script is designed as a daily image grab script because the script terminates when a duplicate filename is found.
 
-Minimum argument needed for the extraction to work succesfully is only the subreddit name or username (```-redditor``` flag needed).
+Minimum argument needed for the extraction to work succesfully is only the subreddit name or username (```--redditor``` flag needed).
 
 ```
 python lonk_dl.py [OPTIONS] subreddit
@@ -37,7 +37,7 @@ python lonk_dl.py [OPTIONS] subreddit
 
 Example usage:
 * ```python lonk_dl.py cozyplaces --limit 100```
-* To download from your saved submissions: ```python lonk_dl.py myredditusername -redditor -sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
+* To download from your saved submissions: ```python lonk_dl.py myredditusername --redditor --sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
 
 
 ## Options
