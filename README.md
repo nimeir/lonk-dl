@@ -1,6 +1,23 @@
 # lonk-dl
 
-Reddit daily image grabber script. It can be used to download images from subreddits, specific redditor's submissions, your saved submissions, etc.
+Reddit daily image grabber script. It can be configured to download all new image submissions to create a library of images. 
+
+Read below for optional arguments for donwloading from subreddits, specific redditor's submissions, your saved submissions, etc.
+
+
+## Usage guide
+This script is designed as a daily image grab script because the script terminates when a duplicate filename is found.
+
+Minimum argument needed for the extraction to work succesfully is only the subreddit name or Reddit username (```--redditor``` flag needed).
+
+Default limit for download is 1000 submissions.
+```
+python lonk_dl.py [OPTIONS] subreddit
+```
+
+Example usage:
+* To download up to 100 new submissions: ```python lonk_dl.py subredditname --limit 100```
+* To download from your saved submissions: ```python lonk_dl.py myredditusername --redditor --sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
 
 ## Prerequisites
 
@@ -25,20 +42,6 @@ user_agent=image grab script by boohen
 username=
 password=
 ```
-
-## Usage guide
-This script is designed as a daily image grab script because the script terminates when a duplicate filename is found.
-
-Minimum argument needed for the extraction to work succesfully is only the subreddit name or username (```--redditor``` flag needed).
-
-```
-python lonk_dl.py [OPTIONS] subreddit
-```
-
-Example usage:
-* ```python lonk_dl.py cozyplaces --limit 100```
-* To download from your saved submissions: ```python lonk_dl.py myredditusername --redditor --sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
-
 
 ## Options
 ```            
