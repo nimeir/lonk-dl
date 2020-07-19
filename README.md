@@ -17,7 +17,7 @@ Example usage cases:
 * Up to 1000 new submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces```
 * New submissions from a redditor: ```python lonk_dl.py exampleredditusername --redditor```
 * Up to 100 new submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --limit 100```
-* Top 2000 submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --sort top --limit 2000
+* Top 2000 submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --sort top --limit 2000```
 * To download from your saved submissions where your username is 'myredditusername': ```python lonk_dl.py myredditusername --redditor --sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
 
 ## Prerequisites
