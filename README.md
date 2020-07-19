@@ -4,28 +4,6 @@ lonk-dl is a command line script to download all new images from a subreddit or 
 
 Read below for installation instructions, and optional arguments for downloading from subreddits, specific redditor's submissions, your saved submissions, etc.
 
-
-## Usage guide
-
-Minimum argument needed for the extraction to work succesfully is only the subreddit name or Reddit username (```--redditor``` flag needed).
-
-lonk-dl is designed as a daily image grab script because the script terminates when it comes across a duplicate filename that already exists in the directory. The default download limit is 1000 new submissions but it can be customized with the ```--limit``` argument.
-
-```python lonk_dl.py [OPTIONS] subreddit```
-
-Example usage cases:
-* Up to 1000 new submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces```
-* New submissions from a redditor: ```python lonk_dl.py exampleredditusername --redditor```
-* Up to 100 new submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --limit 100```
-* Top 2000 submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --sort top --limit 2000```
-* To download from your saved submissions where your username is 'myredditusername': ```python lonk_dl.py myredditusername --redditor --sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
-
-## Prerequisites
-
-* Latest version of Python
-* Required packages: **praw** (Reddit API Wrapper for Python)
-* Registering the script on Reddit (see below for instruction)
-
 ## Installing
 
 1. Download the ```lonk_dl.py``` script.
@@ -57,6 +35,21 @@ user_agent=image grab script by rolyli
 username=
 password=
 ```
+
+## Usage guide
+
+Minimum argument needed for the extraction to work succesfully is only the subreddit name or Reddit username (```--redditor``` flag needed).
+
+lonk-dl is designed as a daily image grab script because the script terminates when it comes across a duplicate filename that already exists in the directory. The default download limit is 1000 new submissions but it can be customized with the ```--limit``` argument.
+
+```python lonk_dl.py [OPTIONS] subreddit```
+
+Example usage cases:
+* Up to 1000 new submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces```
+* New submissions from a redditor: ```python lonk_dl.py exampleredditusername --redditor```
+* Up to 100 new submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --limit 100```
+* Top 2000 submissions from /r/cozyplaces: ```python lonk_dl.py cozyplaces --sort top --limit 2000```
+* To download from your saved submissions where your username is 'myredditusername': ```python lonk_dl.py myredditusername --redditor --sort saved``` **Warning: this requires you to specify your username and password in plaintext on praw.ini. Proceed at your own discretion.**
 
 ## Options
 ```            
