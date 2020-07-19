@@ -40,7 +40,7 @@ password=
 
 Minimum argument needed for the extraction to work succesfully is only the subreddit name or Reddit username (```--redditor``` flag needed).
 
-lonk-dl is designed as a daily image grab script because the script terminates when it comes across a duplicate filename that already exists in the directory. The default download limit is 1000 new submissions but it can be customized with the ```--limit``` argument.
+lonk-dl is designed as a daily image grab script because the script terminates when it comes across a duplicate filename that already exists in the directory (this behavior can be overided with the ```--force``` option). The default download limit is 1000 new submissions but it can be customized with the ```--limit``` argument.
 
 ```python lonk_dl.py [OPTIONS] subreddit```
 
