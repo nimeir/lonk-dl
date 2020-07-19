@@ -1,6 +1,6 @@
 # lonk-dl
 
-lonk-dl is a command line script to download all new images from a subreddit or redditor. It requires Python 3.2+ and [PRAW](https://praw.readthedocs.io/en/latest/) python package.
+lonk-dl is a command line script to download all new images from a subreddit or redditor.
 
 Read below for installation instructions, and optional arguments for downloading from subreddits, specific redditor's submissions, your saved submissions, etc.
 
