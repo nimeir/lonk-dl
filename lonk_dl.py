@@ -2,11 +2,6 @@ import praw, requests, argparse, os
 
 
 class LonkDL(praw.Reddit):
-    def determine_filename(self, url):
-        filename = url.split("/")
-        filename = filename[-1].replace('?', '')
-        return filename
-
     def extract_info(self, subreddit, post_limit, sort, no_nsfw):
         #for redditors
         if args.redditor:
@@ -58,12 +53,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def show_msg(msg_type):
-    if msg_type == 'comment':
-        return
-
-
-def determine_path_or_file(path, filename):
+def determine_path(path, filename):
     if path and os.path.isdir(path):
         return os.path.join(path, filename)
     else:
@@ -85,7 +75,7 @@ def main():
                 permissions = 'wb'
             else:
                 permissions = 'xb'
-            with open(determine_path_or_file(args.path, filename), permissions) as f:
+            with open(determine_path(args.path, filename), permissions) as f:
                 print('[%s] %s: Writing file.' % (postid, filename))
                 f.write(content)
         except FileExistsError:
