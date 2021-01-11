@@ -20,21 +20,19 @@ class LonkDL(praw.Reddit):
         #begin extraction with correct mobj and skip iteration depending on CLI args
         for post in mobj:
             try:
-                if type(post) == praw.models.reddit.comment.Comment:
-                    print("[%s] Skipping as it is a comment." % post.id)
-                    continue
-                if self.submission(id=post).is_self:
-                    print("[%s] Skipping as it is a self-submission." % post.id)
-                    continue
+                request = requests.get(post.url)
+                content_header = request.headers['content-type'].split('/')
+
                 if no_nsfw and self.submission(id=post).over_18:
                     print("[%s] Skipping as it is a NSFW post." % post.id)
                     continue
-                request = requests.get(post.url)
-                if 'text/html' in request.headers['content-type']:
-                    print("[%s] Skipping as url type is html text." % post.id)
+                if content_header[0] != 'image':
+                    print("[%s] Skipping as url type is not an image." % post.id)
                     continue
+
                 print("[%s] Attempting to extract from %s." % (post.id, post.url))
-                filename = self.determine_filename(post.url)
+
+                filename = post.id + "." + content_header[1]
                 content = request.content
                 yield post.id, filename, content
             except requests.ConnectionError:
